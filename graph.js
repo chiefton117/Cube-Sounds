@@ -8,27 +8,33 @@ function main() {
   document.body.appendChild( renderer.domElement );
 
 
-  var g1 = new THREE.BoxGeometry( 1, 1, 1 );
-  var g2 = new THREE.BoxGeometry( 1, 1, 1 );
-  var g3 = new THREE.BoxGeometry( 1, 1, 1 );
+  var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+
 
   const material = new THREE.MeshBasicMaterial( { 
     color: 'purple' } );
 
-  const m2 = new THREE.MeshBasicMaterial( { 
-    color: 'yellow' } );
-  const m3 = new THREE.MeshBasicMaterial( { 
-    color: 'red' } );
+  const col = new THREE.Color(0xffffff);
+  col.setHex(Math.random() * 0xffffff);
+  
+  // const m2 = new THREE.MeshLambertMaterial( { color: col } );
+  // const m3 = new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } );
 
   // const material = new THREE.MeshStandardMaterial( { 
   // color: 0x00ff00 } );
+  const cr = new THREE.Color("#" + Math.floor(Math.random()*16777215).toString(16));
 
+  const m2 = new THREE.MeshStandardMaterial( { 
+  color: cr } );
+
+  console.log(m2.color);
+  console.log(material.color);
   const box = new THREE.Box3();
 
 
-  const cube = new THREE.Mesh( g1, material );
-  const cube2 = new THREE.Mesh( g2, m2 );
-  const cube3 = new THREE.Mesh( g3, m3 );
+  const cube = new THREE.Mesh( geometry, material );
+  const cube2 = new THREE.Mesh( geometry, material );
+  const cube3 = new THREE.Mesh( geometry, m2 );
 
 
 
@@ -36,30 +42,24 @@ function main() {
   scene.add(cube2);
   //scene.add(cube3);
 
-  //cube2.position.setX(200);
-  //cube2.position.set(20,20,20);
-  //cube3.position.set(200,200,0);
 
-  console.log(cube);
+  console.log(new THREE.Vector2(renderer.getSize));
   const bb = new THREE.BoxHelper(cube2, 0xffffff);
   scene.add(bb);
 
   const bound = cube2.geometry.computeBoundingBox();
 
   //var controls = new OrbitControls( camera, renderer.domElement );
-
+  const rv = new THREE.Vector2(scene.getSize);
   camera.position.z = 5;
+  console.log(rv);
 
-  console.log(renderer.getSize);
-  console.log(window.innerWidth/2);
-  console.log(cube.position.x);
-  console.log(cube.position.y);
-  console.log(cube.position.z);
-  
   var dx = 0.05;
+  var dy = 0.05;
+  var dz = 0.05;
 
   function animate() {
-    
+
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
 
@@ -67,9 +67,12 @@ function main() {
     cube2.rotation.y += dx;
 
     if(Math.abs(cube2.position.x) >= 3) dx = -dx;
+    if(Math.abs(cube2.position.y) >= 3) dy = -dy;
+    if(Math.abs(cube2.position.z) >= 1) dz = -dz;
 
     cube2.position.x += dx;
-
+    cube2.position.y += dy;
+    cube2.position.z += dz;
 
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
