@@ -8,7 +8,7 @@ function main() {
   document.body.appendChild( renderer.domElement );
 
 
-  const max = 3.5;
+  const max = 4;
 
   // Create standard box geometry
   var geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
@@ -54,14 +54,14 @@ function main() {
 
   scene.add(bound);
 
-  //var controls = new OrbitControls( camera, renderer.domElement );
+  const controls = new THREE.OrbitControls( camera, renderer.domElement );
   const rv = new THREE.Vector2(scene.getSize);
-  //camera.position.x = 3;
-  //camera.position.y = 3;
+
   camera.position.z = 10;
-  camera.position.y = 6;
-  //camera.rotation.y = -5;
-  camera.rotation.x = 5.5;
+  //camera.position.y = 15;
+
+
+
   //camera.rotation.z = Math.PI/4;
   console.log(rv);
 
@@ -75,9 +75,10 @@ function main() {
 
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / max_cubes );
   let colorC = (d) => d3.interpolateTurbo( parseInt(d) / max_cubes );
-function rgbToHex(r, g, b) {
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-} 
+
+  function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  } 
 
   for(var i = 0; i < max_cubes; i++) {
 
@@ -87,14 +88,12 @@ function rgbToHex(r, g, b) {
     const cube = new THREE.Mesh( geometry, material );
     cubes[i] = cube;
 
-    //Math.sin(Math.random(max)) * max;
-
     cubes[i].dx = Math.sin((Math.random()-0.5)) * max_speed;
     cubes[i].dy = Math.sin((Math.random()-0.5)) * max_speed;
     cubes[i].dz = Math.sin((Math.random()-0.5)) * max_speed;
+   
     scene.add(cube);  
-    console.log(colorC(i));
-    console.log(cubes[i].material.color);
+
     // cube.position.x = Math.sin(Math.random(max)) * max;
     // cube.position.y = Math.sin(Math.random(max)) * max;
     // cube.position.z = Math.sin(Math.random(max)) * max;
@@ -136,7 +135,7 @@ function rgbToHex(r, g, b) {
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
-      if(Math.abs(d.position.z) >= 1) {
+      if(Math.abs(d.position.z) >= max) {
         d.position.z = 0;
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
