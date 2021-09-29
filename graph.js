@@ -8,13 +8,13 @@ function main() {
   document.body.appendChild( renderer.domElement );
 
 
-  const max = 4;
+  const max = 2.5;
 
   // Create standard box geometry
-  var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  var bb = new THREE.BoxGeometry(max,max,max);
+  var geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
 
 
+  var bb = new THREE.BoxGeometry(max*Math.E,max*Math.E,max*Math.E);
 
 
 
@@ -34,21 +34,19 @@ function main() {
   const m2 = new THREE.MeshStandardMaterial( { 
   color: cr } );
 
-  console.log(m2.color);
-  console.log(material.color);
   const box = new THREE.Box3();
 
   // Create bounding box render
   const bound = new THREE.BoxHelper(new THREE.Mesh(bb, new THREE.MeshBasicMaterial( 0xff0000 )), 0xffffff);
 
-  const cube = new THREE.Mesh( geometry, material );
-  const cube2 = new THREE.Mesh( geometry, material );
-  const cube3 = new THREE.Mesh( geometry, m2 );
+  // const cube = new THREE.Mesh( geometry, material );
+  // const cube2 = new THREE.Mesh( geometry, material );
+  // const cube3 = new THREE.Mesh( geometry, m2 );
 
 
 
-  scene.add(cube);
-  scene.add(cube2);
+  // scene.add(cube);
+  // scene.add(cube2);
   //scene.add(cube3);
 
 
@@ -58,29 +56,58 @@ function main() {
 
   //var controls = new OrbitControls( camera, renderer.domElement );
   const rv = new THREE.Vector2(scene.getSize);
-  camera.position.z = 5;
+  //camera.position.x = 3;
+  //camera.position.y = 3;
+  camera.position.z = 10;
   console.log(rv);
 
   var dx = 0.05;
   var dy = 0.05;
   var dz = 0.05;
 
+  var max_cubes = 4;
+  var cubes = [];
+
+  //let colorC = (d) => d3.interpolateMagma( parseInt(d) / max_cubes );
+  let colorC = (d) => d3.interpolateTurbo( parseInt(d) / max_cubes );
+
+  for(var i = 0; i < max_cubes; i++) {
+
+    const material = new THREE.MeshBasicMaterial( { 
+      color: colorC(i) } );
+
+    const cube = new THREE.Mesh( geometry, material );
+    cubes[i] = cube;
+    scene.add(cube);
+    cube.position.x = Math.sin(Math.random(max)) * max;
+    cube.position.y = Math.sin(Math.random(max)) * max;
+    cube.position.z = Math.sin(Math.random(max)) * max;
+
+  }
+
+
   function animate() {
 
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
 
-    cube2.rotation.x += dx;
-    cube2.rotation.y += dx;
+      cubes.forEach(function(d) {
 
-    if(Math.abs(cube2.position.x) >= max) dx = -dx;
-    if(Math.abs(cube2.position.y) >= max) dy = -dy;
-    if(Math.abs(cube2.position.z) >= 1) dz = -dz;
+      d.rotation.x += dx;
+      d.rotation.y += dx;
 
-    
-    cube2.position.x += dx;
-    cube2.position.y += dy;
-    cube2.position.z += dz;
+      if(Math.abs(d.position.x) >= max) dx = -dx;
+      if(Math.abs(d.position.y) >= max) dy = -dy;
+      if(Math.abs(d.position.z) >= 1) dz = -dz;
+
+
+      d.position.x += dx;
+      d.position.y += dy;
+      d.position.z += dz;
+
+
+    });
+
+
+
 
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
