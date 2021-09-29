@@ -1,14 +1,21 @@
   
 function main() {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+  const camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
 
 
+  const max = 4;
+
+  // Create standard box geometry
   var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+  var bb = new THREE.BoxGeometry(max,max,max);
+
+
+
 
 
   const material = new THREE.MeshBasicMaterial( { 
@@ -31,6 +38,8 @@ function main() {
   console.log(material.color);
   const box = new THREE.Box3();
 
+  // Create bounding box render
+  const bound = new THREE.BoxHelper(new THREE.Mesh(bb, new THREE.MeshBasicMaterial( 0xff0000 )), 0xffffff);
 
   const cube = new THREE.Mesh( geometry, material );
   const cube2 = new THREE.Mesh( geometry, material );
@@ -44,10 +53,8 @@ function main() {
 
 
   console.log(new THREE.Vector2(renderer.getSize));
-  const bb = new THREE.BoxHelper(cube2, 0xffffff);
-  scene.add(bb);
 
-  const bound = cube2.geometry.computeBoundingBox();
+  scene.add(bound);
 
   //var controls = new OrbitControls( camera, renderer.domElement );
   const rv = new THREE.Vector2(scene.getSize);
@@ -66,10 +73,11 @@ function main() {
     cube2.rotation.x += dx;
     cube2.rotation.y += dx;
 
-    if(Math.abs(cube2.position.x) >= 3) dx = -dx;
-    if(Math.abs(cube2.position.y) >= 3) dy = -dy;
+    if(Math.abs(cube2.position.x) >= max) dx = -dx;
+    if(Math.abs(cube2.position.y) >= max) dy = -dy;
     if(Math.abs(cube2.position.z) >= 1) dz = -dz;
 
+    
     cube2.position.x += dx;
     cube2.position.y += dy;
     cube2.position.z += dz;
