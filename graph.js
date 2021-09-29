@@ -65,7 +65,8 @@ function main() {
   var dy = 0.05;
   var dz = 0.05;
 
-  var max_cubes = 4;
+  var max_cubes = 15;
+  var max_speed = 0.05;
   var cubes = [];
 
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / max_cubes );
@@ -78,10 +79,16 @@ function main() {
 
     const cube = new THREE.Mesh( geometry, material );
     cubes[i] = cube;
+
+    //Math.sin(Math.random(max)) * max;
+
+    cubes[i].dx = (Math.random()-0.5) * max_speed;
+    cubes[i].dy = (Math.random()-0.5) * max_speed;
+    cubes[i].dz = (Math.random()-0.5) * max_speed;
     scene.add(cube);
-    cube.position.x = Math.sin(Math.random(max)) * max;
-    cube.position.y = Math.sin(Math.random(max)) * max;
-    cube.position.z = Math.sin(Math.random(max)) * max;
+    // cube.position.x = Math.sin(Math.random(max)) * max;
+    // cube.position.y = Math.sin(Math.random(max)) * max;
+    // cube.position.z = Math.sin(Math.random(max)) * max;
 
   }
 
@@ -91,18 +98,27 @@ function main() {
 
       cubes.forEach(function(d) {
 
-      d.rotation.x += dx;
-      d.rotation.y += dx;
+      //d.rotation.x += dx;
+      //d.rotation.y += dx;
 
-      if(Math.abs(d.position.x) >= max) dx = -dx;
-      if(Math.abs(d.position.y) >= max) dy = -dy;
-      if(Math.abs(d.position.z) >= 1) dz = -dz;
+      // if(Math.abs(d.position.x) >= max) dx = -dx;
+      // if(Math.abs(d.position.y) >= max) dy = -dy;
+      // if(Math.abs(d.position.z) >= 1) dz = -dz;
 
 
-      d.position.x += dx;
-      d.position.y += dy;
-      d.position.z += dz;
+      if(Math.abs(d.position.x) >= max) d.position.x = 0;
+      if(Math.abs(d.position.y) >= max) d.position.y = 0;
+      if(Math.abs(d.position.z) >= 1) d.position.z = 0;
 
+
+      // d.position.x += dx;
+      // d.position.y += dy;
+      // d.position.z += dz;
+
+      d.position.x += d.dx;
+      d.position.y += d.dy;
+      d.position.z += d.dz;
+      //Math.sin(Math.random(max)) * max
 
     });
 
