@@ -56,40 +56,20 @@ function main() {
   console.log(cube.position.y);
   console.log(cube.position.z);
   
+  var dx = 0.05;
+
   function animate() {
-
-    //cube.geometry.computeBoundingBox();
-    //cube2.geometry.computeBoundingBox();
-
-    //box.copy( cube.geometry.boundingBox ).applyMatrix4( cube.matrixWorld );
-    //box.copy( cube2.geometry.boundingBox ).applyMatrix4( cube2.matrixWorld );
-
+    
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
 
+    cube2.rotation.x += dx;
+    cube2.rotation.y += dx;
 
-    //cube2.rotation.x += 0.01;
+    if(Math.abs(cube2.position.x) >= 3) dx = -dx;
 
+    cube2.position.x += dx;
 
-  // var objHalfWidth = cube2.geometry.parameters.width / 2;
-  // if (cube2.position.x + objHalfWidth >= bound.geometry.boundingBox.max.x){
-  //     cube2.position.x = bound.geometry.boundingBox.max.x - objHalfWidth;
-  // }
-  // if (cube2.position.x - objHalfWidth <= bound.geometry.boundingBox.min.x){
-  //     cube2.position.x = bound.geometry.boundingBox.min.x + objHalfWidth;
-  // }
-
-    // cube2.needsUpdate = true;
-    // cube2.updateMatrix();
-
-
-    if(cube2.position.x < 2) {
-      cube2.position.x += 0.01;
-      bb.position.x += 0.01;
-    } else {
-      cube2.position.x -= 0.01;
-      bb.position.x -= 0.01;
-    }
 
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
