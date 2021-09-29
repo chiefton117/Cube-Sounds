@@ -8,7 +8,7 @@ function main() {
   document.body.appendChild( renderer.domElement );
 
 
-  const max = 2.5;
+  const max = 3.5;
 
   // Create standard box geometry
   var geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
@@ -59,18 +59,25 @@ function main() {
   //camera.position.x = 3;
   //camera.position.y = 3;
   camera.position.z = 10;
+  camera.position.y = 6;
+  //camera.rotation.y = -5;
+  camera.rotation.x = 5.5;
+  //camera.rotation.z = Math.PI/4;
   console.log(rv);
 
   var dx = 0.05;
   var dy = 0.05;
   var dz = 0.05;
 
-  var max_cubes = 15;
-  var max_speed = 0.05;
+  var max_cubes = 50;
+  var max_speed = 0.1;
   var cubes = [];
 
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / max_cubes );
   let colorC = (d) => d3.interpolateTurbo( parseInt(d) / max_cubes );
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+} 
 
   for(var i = 0; i < max_cubes; i++) {
 
@@ -82,10 +89,12 @@ function main() {
 
     //Math.sin(Math.random(max)) * max;
 
-    cubes[i].dx = (Math.random()-0.5) * max_speed;
-    cubes[i].dy = (Math.random()-0.5) * max_speed;
-    cubes[i].dz = (Math.random()-0.5) * max_speed;
-    scene.add(cube);
+    cubes[i].dx = Math.sin((Math.random()-0.5)) * max_speed;
+    cubes[i].dy = Math.sin((Math.random()-0.5)) * max_speed;
+    cubes[i].dz = Math.sin((Math.random()-0.5)) * max_speed;
+    scene.add(cube);  
+    console.log(colorC(i));
+    console.log(cubes[i].material.color);
     // cube.position.x = Math.sin(Math.random(max)) * max;
     // cube.position.y = Math.sin(Math.random(max)) * max;
     // cube.position.z = Math.sin(Math.random(max)) * max;
@@ -96,7 +105,7 @@ function main() {
   function animate() {
 
 
-      cubes.forEach(function(d) {
+      cubes.forEach(function(d,idx) {
 
       //d.rotation.x += dx;
       //d.rotation.y += dx;
@@ -104,11 +113,35 @@ function main() {
       // if(Math.abs(d.position.x) >= max) dx = -dx;
       // if(Math.abs(d.position.y) >= max) dy = -dy;
       // if(Math.abs(d.position.z) >= 1) dz = -dz;
+      //var clr = colorC(idx);
+      //d.material.color.setHex(rgbToHex(clr.r,clr.g,clr.b));
+
+      //d.material.needsUpdate = true;
+
+      // if(Math.abs(d.position.x) >= max) d.position.x = 0;
+      // if(Math.abs(d.position.y) >= max) d.position.y = 0;
+      // if(Math.abs(d.position.z) >= 1) d.position.z = 0;
 
 
-      if(Math.abs(d.position.x) >= max) d.position.x = 0;
-      if(Math.abs(d.position.y) >= max) d.position.y = 0;
-      if(Math.abs(d.position.z) >= 1) d.position.z = 0;
+      if(Math.abs(d.position.x) >= max) {
+        d.position.x = 0;
+        d.dx = Math.sin((Math.random()-0.5)) * max_speed;
+        d.dy = Math.sin((Math.random()-0.5)) * max_speed;
+        d.dz = Math.sin((Math.random()-0.5)) * max_speed;
+
+      }
+      if(Math.abs(d.position.y) >= max) {
+        d.position.y = 0;
+        d.dx = Math.sin((Math.random()-0.5)) * max_speed;
+        d.dy = Math.sin((Math.random()-0.5)) * max_speed;
+        d.dz = Math.sin((Math.random()-0.5)) * max_speed;
+      }
+      if(Math.abs(d.position.z) >= 1) {
+        d.position.z = 0;
+        d.dx = Math.sin((Math.random()-0.5)) * max_speed;
+        d.dy = Math.sin((Math.random()-0.5)) * max_speed;
+        d.dz = Math.sin((Math.random()-0.5)) * max_speed;
+      }
 
 
       // d.position.x += dx;
