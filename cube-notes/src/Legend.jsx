@@ -1,31 +1,16 @@
 import './App.css';
-import React, { useState } from 'react';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import * as THREE from 'three';
-import * as Tone from 'tone'
-import * as d3 from 'd3';
+import React from 'react';
 import Scale from './Scale.jsx'
 
 function Legend(props) {
 
-  var options = {
-    note: "",
-    mode: "",
-    tempo: 90,
-    scale: []
-  };
 
 
-  const [mode, setMode] = useState(options.note);
-  const [note, setNote] = useState(options.mode);
-  const [tempo, setTempo] = useState(options.tempo);
-  const [scale, setScale] = useState(options.scale);
+  // const legend = d3.select(".legend")
+  //   .append("g");
 
-  const legend = d3.select(".legend")
-    .append("g");
-
-  legend.append("h4")
-    .text("Controls");
+  // legend.append("h4")
+  //   .text("Controls");
 
   return (
 
@@ -33,18 +18,11 @@ function Legend(props) {
       <h4>Controls</h4>
         <hr/>
 
-      <text>Tempo</text>
-      <input type="range" min="0" max="10" value="0" step="0.1" id="tempo" orient="vertical"></input>
+      <p>Tempo</p>
+{/*      <input type="range" min="0" max="10" value="0" step="0.1" id="tempo" orient="vertical"></input>*/}
         <hr/>
 
-        <Scale onChange = {d => console.log(d.event.target)}
-          mode={mode}
-          setMode={setMode}
-          note={note}
-          setNote={setNote}
-          tempo={tempo}
-          setTempo={setTempo}
-        />
+        <Scale {...props}/>
 
         <hr/>
 
