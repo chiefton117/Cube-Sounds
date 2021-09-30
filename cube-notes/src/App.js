@@ -9,8 +9,8 @@ function App() {
 
 
   var options = {
-    note: 'D',
-    mode: "Minor",
+    note: 'C',
+    mode: "Major",
     tempo: 90,
     scale: ['A','B','C','D','E','F','G']
   };
@@ -70,7 +70,7 @@ async function initAudio() {
 }
 
 
-  let maxCubes = 15;
+  let maxCubes = 7;
 
   // Continuous color schemes
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / maxCubes );
@@ -98,8 +98,6 @@ async function initAudio() {
           color={colorC}
           maxCubes={maxCubes}
           tone={Tone}
-          //synth={synths}
-          //scale={scale}
           scaleRef={scaleRef}
         />
 

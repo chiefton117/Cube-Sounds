@@ -27,16 +27,6 @@ function main() {
   var bb = new THREE.BoxGeometry(max*Math.E,max*Math.E,max*Math.E);
 
 
-
-  const material = new THREE.MeshBasicMaterial( { 
-    color: 'purple' } );
-
-  const col = new THREE.Color(0xffffff);
-  col.setHex(Math.random() * 0xffffff);
-  
-  // const m2 = new THREE.MeshLambertMaterial( { color: col } );
-  // const m3 = new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } );
-
   const cr = new THREE.Color("#" + Math.floor(Math.random()*16777215).toString(16));
 
   // Create bounding box render
@@ -62,7 +52,7 @@ function main() {
   var dz = 0.05;
 
   var scale_len = props.scaleRef.current.length;
-  var max_speed = 0.1;
+  var max_speed = 0.05;
   var cubes = [];
 
   for(var i = 0; i < props.maxCubes; i++) {
@@ -75,21 +65,18 @@ function main() {
     cubes[i] = cube;
 
     cubes[i].note = (props.scaleRef.current[i % scale_len] + Math.floor(Math.random() * 7)).toString();
-    cubes[i].synth = new Tone.Synth().toDestination();
+    cubes[i].synth = new Tone.FMSynth().toDestination();
+    //cubes[i].synth = new Tone.Reverb();
     console.log(cubes[i].note);
     cubes[i].dx = Math.sin((Math.random()-0.5)) * max_speed;
-    cubes[i].dy = Math.sin((Math.random()-0.5)) * max_speed;
-    cubes[i].dz = Math.sin((Math.random()-0.5)) * max_speed;
+    //cubes[i].dy = Math.sin((Math.random()-0.5)) * max_speed;
+    //cubes[i].dz = Math.sin((Math.random()-0.5)) * max_speed;
+    cubes[i].dy = 0;
+    cubes[i].dz = 0;
+
     scene.add(cube);  
 
   }
-
-
-  // let synths = [];
-  // for(var i = 0; i < props.maxCubes; i++) {
-  //     const synth = new Tone.Synth().toDestination();
-  //     synths.push(synth);
-  // }
 
   console.log(props.scaleRef);
 
@@ -109,9 +96,9 @@ function main() {
         d.position.y = 0;
         d.position.z = 0;
         d.synth.triggerAttackRelease(d.note, "8n");
-        d.dx = Math.sin((Math.random()-0.5)) * max_speed;
-        d.dy = Math.sin((Math.random()-0.5)) * max_speed;
-        d.dz = Math.sin((Math.random()-0.5)) * max_speed;
+        // d.dx = Math.sin((Math.random()-0.5)) * max_speed;
+        // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
+        // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
 
       }
       if(Math.abs(d.position.y) >= max) {
@@ -119,18 +106,18 @@ function main() {
         d.position.y = 0;
         d.position.z = 0;
         d.synth.triggerAttackRelease(d.note, "8n");
-        d.dx = Math.sin((Math.random()-0.5)) * max_speed;
-        d.dy = Math.sin((Math.random()-0.5)) * max_speed;
-        d.dz = Math.sin((Math.random()-0.5)) * max_speed;
+        // d.dx = Math.sin((Math.random()-0.5)) * max_speed;
+        // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
+        // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
       if(Math.abs(d.position.z) >= max) {
         d.position.x = 0;
         d.position.y = 0;
         d.position.z = 0;
         d.synth.triggerAttackRelease(d.note, "8n");
-        d.dx = Math.sin((Math.random()-0.5)) * max_speed;
-        d.dy = Math.sin((Math.random()-0.5)) * max_speed;
-        d.dz = Math.sin((Math.random()-0.5)) * max_speed;
+        // d.dx = Math.sin((Math.random()-0.5)) * max_speed;
+        // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
+        // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
 
 
