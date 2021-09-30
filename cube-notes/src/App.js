@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
 import * as Tone from 'tone'
 import * as d3 from 'd3';
+import Legend from './Legend.jsx';
 function App() {
 
 
@@ -184,13 +185,6 @@ function main() {
 window.onload = main;
 
 
-
-
-
-
-
-
-
   return (
 
     <div className="App">
@@ -200,6 +194,9 @@ window.onload = main;
 
       </head>
       <body>
+        <Legend/>
+
+
 
       </body>
     </div>

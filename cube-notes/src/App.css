@@ -1,7 +1,15 @@
 .App {
   text-align: center;
 }
+.legend {
+  position: absolute;
+  color: white;
+  border: 1px solid white;
+  padding-left: 1em;
+  padding-right: 1em;
+  writing-mode: bt-lr; /* IE */
 
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
