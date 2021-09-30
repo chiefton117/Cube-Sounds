@@ -1,6 +1,7 @@
 import './App.css';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
+import * as Tone from 'tone';
 import React, { useState } from 'react';
 import * as d3 from 'd3';
 function Cube(props) {
@@ -53,7 +54,6 @@ function main() {
   //camera.position.y = 15;
 
 
-
   //camera.rotation.z = Math.PI/4;
   console.log(rv);
 
@@ -95,9 +95,11 @@ function main() {
       //d.rotation.x += dx;
       //d.rotation.y += dx;
 
+      const synth = new Tone.Synth().toDestination();
 
       if(Math.abs(d.position.x) >= max) {
         d.position.x = 0;
+        synth.triggerAttackRelease("E4", "8n");
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;
@@ -105,12 +107,14 @@ function main() {
       }
       if(Math.abs(d.position.y) >= max) {
         d.position.y = 0;
+        synth.triggerAttackRelease("C4", "8n");
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
       if(Math.abs(d.position.z) >= max) {
         d.position.z = 0;
+        synth.triggerAttackRelease("D4", "8n");
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;

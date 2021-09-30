@@ -1,4 +1,3 @@
-
 import './App.css';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
@@ -60,7 +59,7 @@ function App() {
 }
 
 
-  let maxCubes = 50;
+  let maxCubes = 5;
 
 
   // Continuous color schemes
@@ -72,10 +71,17 @@ function App() {
 
 
   // Tone.js implementation
-  const synth = new Tone.Synth().toDestination();
+  //const synth = new Tone.Synth().toMaster();
 
-  Tone.start();
-  synth.triggerAttackRelease("C4", "8n");
+  //attach a click listener to a play button
+  document.getElementById('audioStart')?.addEventListener('click', async () => {
+    await Tone.start();
+    console.log('audio is ready');
+  })
+
+  console.log(document.getElementById('audioStart'));
+
+  //synth.triggerAttackRelease("C4", "8n");
 
 
 
@@ -92,6 +98,7 @@ function App() {
         <Cube 
           color={colorC}
           maxCubes={maxCubes}
+          //synth={synth}
         />
 
         <Legend onChange = {appOnChange()}
