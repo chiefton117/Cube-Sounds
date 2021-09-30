@@ -1,6 +1,4 @@
 import './App.css';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import * as THREE from 'three';
 import * as Tone from 'tone'
 import React, { useState } from 'react';
 import * as d3 from 'd3';
@@ -11,18 +9,22 @@ function App() {
 
 
   var options = {
-    note: 'A',
-    mode: "Major",
+    note: 'D',
+    mode: "Minor",
     tempo: 90,
-    scale: []
+    scale: ['A','B','C','D','E','F','G']
   };
 
 
   const [mode, setMode] = useState(options.mode);
   const [note, setNote] = useState(options.note);
   const [tempo, setTempo] = useState(options.tempo);
-  const [scale, setScale] = useState(options.scale);
+  let [scale, setScale] = useState(options.scale);
   //const [play, setPlay] = useState(options.play);
+
+  const scaleRef = React.useRef(options.scale);
+  scaleRef.current = options.scale;
+
 
   // Define some music theory terms
   // Starting at 'C0' and ending at 'G#9'
@@ -47,7 +49,6 @@ function App() {
   
   // On change, calculate a new scale with input values
   function appOnChange() {
-
   options.scale = [];
   let arr = (mode === "Major") ? major : minor;
   let start = notes.indexOf(note);
@@ -56,6 +57,9 @@ function App() {
 
     options.scale.push(notes[((d + start) % notes.length)]);
      });
+  //setScale(options.scale);
+  scaleRef.current = options.scale;
+
 }
 
 async function initAudio() {
@@ -66,16 +70,7 @@ async function initAudio() {
 }
 
 
-  let maxCubes = 5;
-
-  // Likely inefficient
-  // Attach a synth object to each node
-  // Then pass to child
-  let synths = [];
-  for(var i = 0; i < maxCubes; i++) {
-      let synth = new Tone.Synth().toMaster();
-      synths.push(synth);
-  }
+  let maxCubes = 15;
 
   // Continuous color schemes
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / maxCubes );
@@ -102,8 +97,10 @@ async function initAudio() {
         <Cube 
           color={colorC}
           maxCubes={maxCubes}
-          synth={synths}
-          scale={scale}
+          tone={Tone}
+          //synth={synths}
+          //scale={scale}
+          scaleRef={scaleRef}
         />
 
         <Legend onChange = {appOnChange()}

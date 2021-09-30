@@ -61,6 +61,7 @@ function main() {
   var dy = 0.05;
   var dz = 0.05;
 
+  var scale_len = props.scaleRef.current.length;
   var max_speed = 0.1;
   var cubes = [];
 
@@ -73,13 +74,24 @@ function main() {
     const cube = new THREE.Mesh( geometry, material );
     cubes[i] = cube;
 
+    cubes[i].note = (props.scaleRef.current[i % scale_len] + Math.floor(Math.random() * 7)).toString();
+    cubes[i].synth = new Tone.Synth().toDestination();
+    console.log(cubes[i].note);
     cubes[i].dx = Math.sin((Math.random()-0.5)) * max_speed;
     cubes[i].dy = Math.sin((Math.random()-0.5)) * max_speed;
     cubes[i].dz = Math.sin((Math.random()-0.5)) * max_speed;
-   
     scene.add(cube);  
 
   }
+
+
+  // let synths = [];
+  // for(var i = 0; i < props.maxCubes; i++) {
+  //     const synth = new Tone.Synth().toDestination();
+  //     synths.push(synth);
+  // }
+
+  console.log(props.scaleRef);
 
 
   function animate() {
@@ -94,23 +106,28 @@ function main() {
 
       if(Math.abs(d.position.x) >= max) {
         d.position.x = 0;
-        console.log((props.scale[idx] + Math.Floor(Math.random()*9)));
-        props.synth[idx].triggerAttackRelease((props.scale[idx] + Math.random()*9), "16n");
+        d.position.y = 0;
+        d.position.z = 0;
+        d.synth.triggerAttackRelease(d.note, "8n");
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;
 
       }
       if(Math.abs(d.position.y) >= max) {
+        d.position.x = 0;
         d.position.y = 0;
-        props.synth[idx].triggerAttackRelease("D4", "16n");
+        d.position.z = 0;
+        d.synth.triggerAttackRelease(d.note, "8n");
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
       if(Math.abs(d.position.z) >= max) {
+        d.position.x = 0;
+        d.position.y = 0;
         d.position.z = 0;
-        props.synth[idx].triggerAttackRelease("C4", "16n");
+        d.synth.triggerAttackRelease(d.note, "8n");
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;
@@ -148,4 +165,4 @@ window.onload = main;
   );
 }
 
-export default Cube;
+export default React.memo(Cube);
