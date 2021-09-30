@@ -25,12 +25,27 @@ function Legend(props) {
   // Minor scales follow the pattern of W-H-W-W-H-W-W
   const minor = [0,2,3,5,7,8,10]; 
 
+  let scale = [];
+  
 
   const legend = d3.select(".legend")
     .append("g");
 
   legend.append("h4")
     .text("Controls");
+
+  function setScale() {
+
+    let arr = props.mode == "Major" ? major : minor;
+    let start = notes.indexOf(props.note);
+    scale.append(notes[start]);
+
+    arr.forEach(d => (
+      //// TODO fix wrapping for notes
+      scale.append(notes[(d + start)]);
+
+       ));
+  }
 
   return (
 
@@ -40,7 +55,7 @@ function Legend(props) {
       <select name="note">
       {notes.map((d) => (
 
-        <option value={d} onChange = {props.setNote(d)}>{d}</option>
+        <option value={d} onChange = {props.setNote(d); setScale();}>{d}</option>
 
       ))};
       </select>
@@ -51,7 +66,7 @@ function Legend(props) {
       <select name="mode">
       {modes.map((d) => (
 
-        <option value={d} onChange = {props.setMode(d)}>{d}</option>
+        <option value={d} onChange = {props.setMode(d); setScale();}>{d}</option>
 
       ))};
       </select>

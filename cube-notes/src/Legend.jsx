@@ -11,13 +11,15 @@ function Legend(props) {
   var options = {
     note: "",
     mode: "",
-    tempo: 90
+    tempo: 90,
+    scale: []
   };
 
 
   const [mode, setMode] = useState(options.note);
   const [note, setNote] = useState(options.mode);
   const [tempo, setTempo] = useState(options.tempo);
+  const [scale, setScale] = useState(options.scale);
 
   const legend = d3.select(".legend")
     .append("g");
