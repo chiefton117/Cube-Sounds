@@ -74,6 +74,8 @@ function App() {
   // Tone.js implementation
   const synth = new Tone.Synth().toDestination();
 
+  Tone.start();
+  synth.triggerAttackRelease("C4", "8n");
 
 
 

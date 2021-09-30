@@ -1,7 +1,6 @@
 import './App.css';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
-import * as Tone from 'tone'
 import React, { useState } from 'react';
 import * as d3 from 'd3';
 function Cube(props) {
@@ -39,11 +38,6 @@ function main() {
 
   const cr = new THREE.Color("#" + Math.floor(Math.random()*16777215).toString(16));
 
-  const m2 = new THREE.MeshStandardMaterial( { 
-  color: cr } );
-
-  const box = new THREE.Box3();
-
   // Create bounding box render
   const bound = new THREE.BoxHelper(new THREE.Mesh(bb, new THREE.MeshBasicMaterial( 0xff0000 )), 0xffffff);
 
@@ -71,13 +65,15 @@ function main() {
   var cubes = [];
 
 
-
+  // function ccr(i) {
+  //   return props.colorC(i)
+  // }
 
   for(var i = 0; i < props.maxCubes; i++) {
 
 
     const material = new THREE.MeshBasicMaterial( { 
-      color: props.colorC(i) } );
+      color: props.color(i) } );
 
     const cube = new THREE.Mesh( geometry, material );
     cubes[i] = cube;
