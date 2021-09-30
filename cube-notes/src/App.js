@@ -36,7 +36,7 @@ function App() {
 
   // W - Whole step
   // H - Half step
-  // Final notes are omitted to avoid duplicate notes
+  // 'Final' notes are omitted to avoid duplicates i.e. C major ends at B, not C
 
 
   // Major scales follow the pattern of W-W-H-W-W-W-H
@@ -60,6 +60,23 @@ function App() {
 }
 
 
+  let maxCubes = 50;
+
+
+  // Continuous color schemes
+  //let colorC = (d) => d3.interpolateMagma( parseInt(d) / maxCubes );
+  //let colorC = (d) => d3.interpolateTurbo( parseInt(d) / maxCubes );
+
+  // Discrete color scheme
+  let colorC = (d) => d3.schemePaired[d % 10];
+
+
+  // Tone.js implementation
+  const synth = new Tone.Synth().toDestination();
+
+
+
+
   return (
     <>
     <head>
@@ -70,7 +87,10 @@ function App() {
 
     <div className="App">
 
-        <Cube />
+        <Cube 
+          color={colorC}
+          maxCubes={maxCubes}
+        />
 
         <Legend onChange = {appOnChange()}
           modes={modes}

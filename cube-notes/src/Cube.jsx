@@ -1,4 +1,3 @@
-
 import './App.css';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
@@ -10,10 +9,6 @@ function Cube(props) {
 
 
 function main() {
-
-
-  const synth = new Tone.Synth().toDestination();
-
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -72,19 +67,17 @@ function main() {
   var dy = 0.05;
   var dz = 0.05;
 
-  var max_cubes = 50;
   var max_speed = 0.1;
   var cubes = [];
 
-  let colorC = (d) => d3.interpolateMagma( parseInt(d) / max_cubes );
-  //let colorC = (d) => d3.interpolateTurbo( parseInt(d) / max_cubes );
 
 
-  for(var i = 0; i < max_cubes; i++) {
+
+  for(var i = 0; i < props.maxCubes; i++) {
 
 
     const material = new THREE.MeshBasicMaterial( { 
-      color: colorC(i) } );
+      color: props.colorC(i) } );
 
     const cube = new THREE.Mesh( geometry, material );
     cubes[i] = cube;
@@ -155,11 +148,6 @@ window.onload = main;
   return (
 
     <div>
-
-
-
-
-
     </div> 
   );
 }
