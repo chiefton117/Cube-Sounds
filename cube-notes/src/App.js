@@ -22,7 +22,7 @@ function App() {
   const [note, setNote] = useState(options.note);
   const [tempo, setTempo] = useState(options.tempo);
   const [scale, setScale] = useState(options.scale);
-
+  //const [play, setPlay] = useState(options.play);
 
   // Define some music theory terms
   // Starting at 'C0' and ending at 'G#9'
@@ -58,9 +58,24 @@ function App() {
      });
 }
 
+async function initAudio() {
+
+  await Tone.start();
+  console.log("Audio initialized");
+
+}
+
 
   let maxCubes = 5;
 
+  // Likely inefficient
+  // Attach a synth object to each node
+  // Then pass to child
+  let synths = [];
+  for(var i = 0; i < maxCubes; i++) {
+      let synth = new Tone.Synth().toMaster();
+      synths.push(synth);
+  }
 
   // Continuous color schemes
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / maxCubes );
@@ -71,17 +86,6 @@ function App() {
 
 
   // Tone.js implementation
-  //const synth = new Tone.Synth().toMaster();
-
-  //attach a click listener to a play button
-  document.getElementById('audioStart')?.addEventListener('click', async () => {
-    await Tone.start();
-    console.log('audio is ready');
-  })
-
-  console.log(document.getElementById('audioStart'));
-
-  //synth.triggerAttackRelease("C4", "8n");
 
 
 
@@ -98,7 +102,8 @@ function App() {
         <Cube 
           color={colorC}
           maxCubes={maxCubes}
-          //synth={synth}
+          synth={synths}
+          scale={scale}
         />
 
         <Legend onChange = {appOnChange()}
@@ -109,7 +114,8 @@ function App() {
           notes={notes}
           setNote={setNote}
           tempo={tempo}
-          setTempo={setTempo}/>
+          setTempo={setTempo}
+          initAudio={initAudio}/>
 
     </div>
 

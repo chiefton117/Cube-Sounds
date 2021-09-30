@@ -64,11 +64,6 @@ function main() {
   var max_speed = 0.1;
   var cubes = [];
 
-
-  // function ccr(i) {
-  //   return props.colorC(i)
-  // }
-
   for(var i = 0; i < props.maxCubes; i++) {
 
 
@@ -95,11 +90,12 @@ function main() {
       //d.rotation.x += dx;
       //d.rotation.y += dx;
 
-      const synth = new Tone.Synth().toDestination();
+      //const synth = new Tone.Synth().toDestination();
 
       if(Math.abs(d.position.x) >= max) {
         d.position.x = 0;
-        synth.triggerAttackRelease("E4", "8n");
+        console.log((props.scale[idx] + Math.Floor(Math.random()*9)));
+        props.synth[idx].triggerAttackRelease((props.scale[idx] + Math.random()*9), "16n");
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;
@@ -107,14 +103,14 @@ function main() {
       }
       if(Math.abs(d.position.y) >= max) {
         d.position.y = 0;
-        synth.triggerAttackRelease("C4", "8n");
+        props.synth[idx].triggerAttackRelease("D4", "16n");
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
       if(Math.abs(d.position.z) >= max) {
         d.position.z = 0;
-        synth.triggerAttackRelease("D4", "8n");
+        props.synth[idx].triggerAttackRelease("C4", "16n");
         d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         d.dz = Math.sin((Math.random()-0.5)) * max_speed;

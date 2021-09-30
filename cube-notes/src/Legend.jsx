@@ -29,7 +29,9 @@ function Legend(props) {
 
         <hr/>
 
-        <button id="audioStart">Start</button>
+        <button id="audioStart" onClick={props.initAudio()}>Start</button>
+
+        <hr/>
 
     </div> 
   );
