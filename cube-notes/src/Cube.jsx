@@ -78,7 +78,7 @@ function main() {
     // Define more random values :)
     // Once the cube's counter reaches an arbitrary maximum, switch notes
     cubes[i].counter = 0;
-    cubes[i].max = (Math.ceil((Math.random() * 10))+1);
+    cubes[i].max = (Math.ceil((Math.random() * 5))+1);
 
     //cubes[i].dy = 0;
     //cubes[i].dz = 0;
@@ -160,7 +160,12 @@ function main() {
 
 //window.onload = main;
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 useEffect(() => {
+    sleep(5000);
     main();
   }, [props.anim]);
 
