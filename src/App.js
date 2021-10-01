@@ -8,7 +8,7 @@ function App() {
 
 
   var options = {
-    note: 'G',
+    note: 'A',
     mode: "Major",
     tempo: 90,
     scale: []
@@ -29,7 +29,7 @@ function App() {
 
   // Define some music theory terms
   // Starting at 'C0' and ending at 'G#9'
-  const min = 0;
+  const min = 1;
   const max = 9;
 
   const modes = ['Major', 'Minor'];
@@ -38,7 +38,6 @@ function App() {
   // W - Whole step
   // H - Half step
   // 'Final' notes are omitted to avoid duplicates i.e. C major ends at B, not C
-
 
   // Major scales follow the pattern of W-W-H-W-W-W-H
   const major = [0,2,4,5,7,9,11];
@@ -73,11 +72,9 @@ async function initAudio() {
   await Tone.start();
   console.log("Audio initialized");
 
-
-
 }
 
-  let maxCubes = 8;
+  let numCubes = 10;
 
   // Continuous color schemes
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / maxCubes );
@@ -98,7 +95,7 @@ async function initAudio() {
 
         <Cube 
           color={colorC}
-          maxCubes={maxCubes}
+          maxCubes={numCubes}
           tone={Tone}
           scaleRef={scaleRef}
 

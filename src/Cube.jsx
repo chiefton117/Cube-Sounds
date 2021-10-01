@@ -17,8 +17,8 @@ function main() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
 
-
-  const max = 5;
+  // L/W/H of the box - how far does a cube travel before resetting
+  const max = 4;
 
   // Create standard box geometry
   var geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
@@ -43,17 +43,40 @@ function main() {
 
   // scale_len = the length of any major or minor scale
   var scale_len = props.scaleRef.current.length;
-  var max_speed = 0.02;
+  //var max_speed = 0.002;
 
   // Define base and max speed
   // Then, generate a scalar up to max to multiply the base by
   var max_mult = 5;
-  var min_speed = 0.002;
+  var min_speed = 0.0004;
   
+  // Each note timing can range from 1-256
+  // This can be represented as a random power of 2 as
+  // 2**8 == 256 and 2**0 == 1
+  const max_note_len = 8;
+  // What is the maximum pitch notes can play at
+  const max_pitch = 4;
+  // What is the minimum pitch notes can play at
+  const min_pitch = 2;
+
+  // Notes can be represented by:
+  // n - regular note
+  // t - triplet
+  // n. - dotted note
+  // e.g. 4n. is a dotted quarter note
+  const note_types = ['n','t'];
+  
+
+
   var cubes = [];
 
-  const reverb = new Tone.Reverb(1);
+  const reverb = new Tone.Reverb(2);
   const delay = new Tone.PingPongDelay("8n", 0.2);
+  const env = new Tone.Envelope(0.4);
+  const vibrato = new Tone.Vibrato();
+
+  env.attackCurve = 'sine';
+  //env.triggerAttack();
 
   for(var i = 0; i < props.maxCubes; i++) {
 
@@ -65,32 +88,41 @@ function main() {
     cubes[i] = cube;
 
 
-    let randNote = Math.floor(Math.random() * scale_len);
-    cubes[i].note = (props.scaleRef.current[randNote] + Math.floor(Math.random() * 7)).toString();
-    
-    cubes[i].synth = new Tone.MembraneSynth();
-    //cubes[i].synth = new Tone.FMSynth();
 
-    //cubes[i].synth.chain(reverb, delay, Tone.Destination);
+    let randNote = Math.floor(Math.random() * scale_len);
+    let randPitch = Math.floor(Math.random() * max_pitch) + min_pitch;
+    let randLen = 2 ** Math.floor(Math.random() * max_note_len);
+    let type_idx = Math.floor(Math.random() * note_types.length);
+
+    cubes[i].note = (props.scaleRef.current[randNote] + randPitch);
+
+    cubes[i].note_len = (randLen + note_types[type_idx]);
+
+    //cubes[i].synth = new Tone.MembraneSynth();
+    //cubes[i].synth = new Tone.FMSynth();
+    cubes[i].synth = new Tone.Synth();
+
+    //cubes[i].synth.chain(vibrato, reverb, Tone.Destination);
     cubes[i].synth.chain(Tone.Destination);
 
     cubes[i].dx = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
-    cubes[i].dy = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
-    cubes[i].dz = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
+    //cubes[i].dy = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
+    //cubes[i].dz = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
 
     // Define more random values :)
     // Once the cube's counter reaches an arbitrary maximum, switch notes
     cubes[i].counter = 0;
-    cubes[i].max = (Math.ceil((Math.random() * 8))+1);
 
-    //cubes[i].dy = 0;
-    //cubes[i].dz = 0;
+    // How many times can a note repeat before changing
+    // cubes[i].max_repeats = (Math.ceil((Math.random() * 8))+1);
+    cubes[i].max_repeats = 1;
+
+    cubes[i].dy = 0;
+    cubes[i].dz = 0;
 
     scene.add(cube);  
 
   }
-
-  console.log(props.scaleRef);
 
 
   function animate() {
@@ -98,8 +130,8 @@ function main() {
 
       cubes.forEach(function(d,idx) {
 
-      //d.rotation.x += dx;
-      //d.rotation.y += dx;
+      d.rotation.x += dx;
+      d.rotation.y += dx;
 
       //const synth = new Tone.Synth().toDestination();
 
@@ -108,7 +140,7 @@ function main() {
         d.position.x = 0;
         d.position.y = 0;
         d.position.z = 0;
-        d.synth.triggerAttackRelease(d.note, "8n");
+        d.synth.triggerAttackRelease(d.note, d.note_len);
         // d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
@@ -119,7 +151,7 @@ function main() {
         d.position.x = 0;
         d.position.y = 0;
         d.position.z = 0;
-        d.synth.triggerAttackRelease(d.note, "8n");
+        d.synth.triggerAttackRelease(d.note, d.note_len);
         // d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
@@ -129,13 +161,13 @@ function main() {
         d.position.x = 0;
         d.position.y = 0;
         d.position.z = 0;
-        d.synth.triggerAttackRelease(d.note, "8n");
+        d.synth.triggerAttackRelease(d.note, d.note_len);
         // d.dx = Math.sin((Math.random()-0.5)) * max_speed;
         // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
-      if(d.counter >= d.max) {
-        d.note = (props.scaleRef.current[i % scale_len] + Math.floor(Math.random() * 7)).toString();
+      if(d.counter >= d.max_repeats) {
+        d.note = (props.scaleRef.current[i % scale_len] + (Math.floor(Math.random() * max_pitch) + min_pitch)).toString();
         d.counter = 0;
       }
 
