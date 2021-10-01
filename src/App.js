@@ -8,8 +8,8 @@ function App() {
 
 
   var options = {
-    note: 'D',
-    mode: "Minor",
+    note: 'G',
+    mode: "Major",
     tempo: 90,
     scale: []
   };
@@ -72,12 +72,12 @@ async function initAudio() {
   await sleep(3000);
   await Tone.start();
   console.log("Audio initialized");
-  pAnimate();
+
 
 
 }
 
-  let maxCubes = 5;
+  let maxCubes = 8;
 
   // Continuous color schemes
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / maxCubes );
@@ -101,7 +101,7 @@ async function initAudio() {
           maxCubes={maxCubes}
           tone={Tone}
           scaleRef={scaleRef}
-          anim={anim}
+
         />
 
         <Legend onChange = {appOnChange()}

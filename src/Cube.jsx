@@ -43,11 +43,11 @@ function main() {
 
   // scale_len = the length of any major or minor scale
   var scale_len = props.scaleRef.current.length;
-  var max_speed = 0.05;
+  var max_speed = 0.02;
 
   // Define base and max speed
   // Then, generate a scalar up to max to multiply the base by
-  var max_mult = 20;
+  var max_mult = 5;
   var min_speed = 0.002;
   
   var cubes = [];
@@ -64,21 +64,24 @@ function main() {
     const cube = new THREE.Mesh( geometry, material );
     cubes[i] = cube;
 
-    cubes[i].note = (props.scaleRef.current[i % scale_len] + Math.floor(Math.random() * 7)).toString();
+
+    let randNote = Math.floor(Math.random() * scale_len);
+    cubes[i].note = (props.scaleRef.current[randNote] + Math.floor(Math.random() * 7)).toString();
     
-    //cubes[i].synth = new Tone.MembraneSynth();
-    cubes[i].synth = new Tone.FMSynth();
+    cubes[i].synth = new Tone.MembraneSynth();
+    //cubes[i].synth = new Tone.FMSynth();
 
-    cubes[i].synth.chain(reverb, delay, Tone.Destination);
+    //cubes[i].synth.chain(reverb, delay, Tone.Destination);
+    cubes[i].synth.chain(Tone.Destination);
 
-    cubes[i].dx = min_speed * (Math.ceil((Math.random() * max_mult))+1);
-    cubes[i].dy = min_speed * (Math.ceil((Math.random() * max_mult))+1);
-    cubes[i].dz = min_speed * (Math.ceil((Math.random() * max_mult))+1);
+    cubes[i].dx = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
+    cubes[i].dy = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
+    cubes[i].dz = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
 
     // Define more random values :)
     // Once the cube's counter reaches an arbitrary maximum, switch notes
     cubes[i].counter = 0;
-    cubes[i].max = (Math.ceil((Math.random() * 5))+1);
+    cubes[i].max = (Math.ceil((Math.random() * 8))+1);
 
     //cubes[i].dy = 0;
     //cubes[i].dz = 0;
@@ -158,16 +161,16 @@ function main() {
 }
 
 
-//window.onload = main;
+window.onload = main;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-useEffect(() => {
-    sleep(5000);
-    main();
-  }, [props.anim]);
+// useEffect(() => {
+//     sleep(5000);
+//     main();
+//   }, [props.anim]);
 
   return (
 
