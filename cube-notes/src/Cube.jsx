@@ -2,7 +2,7 @@ import './App.css';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
 import * as Tone from 'tone';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function Cube(props) {
 
@@ -36,7 +36,6 @@ function main() {
 
   camera.position.z = 15;
   //camera.position.y = 15;
-
 
   var dx = 0.05;
   var dy = 0.05;
@@ -136,6 +135,7 @@ function main() {
 
     });
 
+
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
 
@@ -146,13 +146,17 @@ function main() {
 }
 
 
-window.onload = main;
+//window.onload = main;
 
+useEffect(() => {
+    main();
+  }, [props.anim]);
 
   return (
 
     <div>
     </div> 
+  
   );
 }
 

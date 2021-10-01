@@ -7,9 +7,8 @@ import Cube from './Cube.jsx';
 function App() {
 
 
-
   var options = {
-    note: 'B',
+    note: 'D',
     mode: "Major",
     tempo: 90,
     scale: ['A','B','C','D','E','F','G']
@@ -21,10 +20,12 @@ function App() {
   const [tempo, setTempo] = useState(options.tempo);
   let [scale, setScale] = useState(options.scale);
   //const [play, setPlay] = useState(options.play);
+  const [anim, pAnimate] = useState(0);
+
 
   const scaleRef = React.useRef(options.scale);
+  const startRef = React.useRef(null);
   scaleRef.current = options.scale;
-
 
   // Define some music theory terms
   // Starting at 'C0' and ending at 'G#9'
@@ -65,11 +66,12 @@ async function initAudio() {
 
   await Tone.start();
   console.log("Audio initialized");
+  pAnimate();
+
 
 }
 
-
-  let maxCubes = 20;
+  let maxCubes = 10;
 
   // Continuous color schemes
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / maxCubes );
@@ -77,11 +79,6 @@ async function initAudio() {
 
   // Discrete color scheme
   let colorC = (d) => d3.schemePaired[d % 10];
-
-
-  // Tone.js implementation
-
-
 
   return (
     <>
@@ -98,6 +95,7 @@ async function initAudio() {
           maxCubes={maxCubes}
           tone={Tone}
           scaleRef={scaleRef}
+          anim={anim}
         />
 
         <Legend onChange = {appOnChange()}
@@ -109,7 +107,8 @@ async function initAudio() {
           setNote={setNote}
           tempo={tempo}
           setTempo={setTempo}
-          initAudio={initAudio}/>
+          initAudio={initAudio}
+          startRef={startRef}/>
 
     </div>
 
