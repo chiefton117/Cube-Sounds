@@ -9,7 +9,7 @@ function App() {
 
 
   var options = {
-    note: 'C',
+    note: 'B',
     mode: "Major",
     tempo: 90,
     scale: ['A','B','C','D','E','F','G']
@@ -32,7 +32,6 @@ function App() {
   const max = 9;
 
   const modes = ['Major', 'Minor'];
-  const baseNotes = ['A','B','C','D','E','F','G'];
   const notes = ['A','A#','B','C','C#','D','D#','E','F','F#','G','G#'];
 
   // W - Whole step
@@ -70,7 +69,7 @@ async function initAudio() {
 }
 
 
-  let maxCubes = 7;
+  let maxCubes = 20;
 
   // Continuous color schemes
   //let colorC = (d) => d3.interpolateMagma( parseInt(d) / maxCubes );

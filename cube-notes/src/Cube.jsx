@@ -2,8 +2,8 @@ import './App.css';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
 import * as Tone from 'tone';
-import React, { useState } from 'react';
-import * as d3 from 'd3';
+import React from 'react';
+
 function Cube(props) {
 
 
@@ -18,7 +18,7 @@ function main() {
   document.body.appendChild( renderer.domElement );
 
 
-  const max = 4;
+  const max = 5;
 
   // Create standard box geometry
   var geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
@@ -26,26 +26,17 @@ function main() {
 
   var bb = new THREE.BoxGeometry(max*Math.E,max*Math.E,max*Math.E);
 
-
-  const cr = new THREE.Color("#" + Math.floor(Math.random()*16777215).toString(16));
-
   // Create bounding box render
   const bound = new THREE.BoxHelper(new THREE.Mesh(bb, new THREE.MeshBasicMaterial( 0xff0000 )), 0xffffff);
-
 
   scene.add(bound);
 
   // const controls = new THREE.OrbitControls( camera, renderer.domElement );
   const controls = new OrbitControls( camera, renderer.domElement );
 
-  const rv = new THREE.Vector2(scene.getSize);
-
   camera.position.z = 15;
   //camera.position.y = 15;
 
-
-  //camera.rotation.z = Math.PI/4;
-  console.log(rv);
 
   var dx = 0.05;
   var dy = 0.05;
@@ -53,7 +44,16 @@ function main() {
 
   var scale_len = props.scaleRef.current.length;
   var max_speed = 0.05;
+
+  // Define base and max speed
+  // Then, generate a scalar up to max to multiply the base by
+  var max_mult = 20;
+  var min_speed = 0.002;
+  
   var cubes = [];
+
+  const reverb = new Tone.Reverb(1);
+  const delay = new Tone.PingPongDelay("8n", 0.2);
 
   for(var i = 0; i < props.maxCubes; i++) {
 
@@ -65,14 +65,18 @@ function main() {
     cubes[i] = cube;
 
     cubes[i].note = (props.scaleRef.current[i % scale_len] + Math.floor(Math.random() * 7)).toString();
-    cubes[i].synth = new Tone.FMSynth().toDestination();
-    //cubes[i].synth = new Tone.Reverb();
-    console.log(cubes[i].note);
-    cubes[i].dx = Math.sin((Math.random()-0.5)) * max_speed;
-    //cubes[i].dy = Math.sin((Math.random()-0.5)) * max_speed;
-    //cubes[i].dz = Math.sin((Math.random()-0.5)) * max_speed;
-    cubes[i].dy = 0;
-    cubes[i].dz = 0;
+    
+    //cubes[i].synth = new Tone.MembraneSynth();
+    cubes[i].synth = new Tone.FMSynth();
+
+    cubes[i].synth.chain(reverb, delay, Tone.Destination);
+
+    cubes[i].dx = min_speed * (Math.ceil((Math.random() * max_mult))+1);
+    cubes[i].dy = min_speed * (Math.ceil((Math.random() * max_mult))+1);
+    cubes[i].dz = min_speed * (Math.ceil((Math.random() * max_mult))+1);
+
+    //cubes[i].dy = 0;
+    //cubes[i].dz = 0;
 
     scene.add(cube);  
 
