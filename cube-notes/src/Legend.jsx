@@ -5,9 +5,6 @@ import Scale from './Scale.jsx'
 function Legend(props) {
 
 
-
-
-
   // const legend = d3.select(".legend")
   //   .append("g");
 

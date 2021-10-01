@@ -41,6 +41,7 @@ function main() {
   var dy = 0.05;
   var dz = 0.05;
 
+  // scale_len = the length of any major or minor scale
   var scale_len = props.scaleRef.current.length;
   var max_speed = 0.05;
 
@@ -74,6 +75,11 @@ function main() {
     cubes[i].dy = min_speed * (Math.ceil((Math.random() * max_mult))+1);
     cubes[i].dz = min_speed * (Math.ceil((Math.random() * max_mult))+1);
 
+    // Define more random values :)
+    // Once the cube's counter reaches an arbitrary maximum, switch notes
+    cubes[i].counter = 0;
+    cubes[i].max = (Math.ceil((Math.random() * 10))+1);
+
     //cubes[i].dy = 0;
     //cubes[i].dz = 0;
 
@@ -95,6 +101,7 @@ function main() {
       //const synth = new Tone.Synth().toDestination();
 
       if(Math.abs(d.position.x) >= max) {
+        d.counter++;
         d.position.x = 0;
         d.position.y = 0;
         d.position.z = 0;
@@ -105,6 +112,7 @@ function main() {
 
       }
       if(Math.abs(d.position.y) >= max) {
+        d.counter++;
         d.position.x = 0;
         d.position.y = 0;
         d.position.z = 0;
@@ -114,6 +122,7 @@ function main() {
         // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
       if(Math.abs(d.position.z) >= max) {
+        d.counter++;
         d.position.x = 0;
         d.position.y = 0;
         d.position.z = 0;
@@ -122,7 +131,10 @@ function main() {
         // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
-
+      if(d.counter >= d.max) {
+        d.note = (props.scaleRef.current[i % scale_len] + Math.floor(Math.random() * 7)).toString();
+        d.counter = 0;
+      }
 
       // d.position.x += dx;
       // d.position.y += dy;

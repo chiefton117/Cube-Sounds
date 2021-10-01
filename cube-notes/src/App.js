@@ -8,10 +8,10 @@ function App() {
 
 
   var options = {
-    note: 'D',
-    mode: "Major",
+    note: 'E',
+    mode: "Minor",
     tempo: 90,
-    scale: ['A','B','C','D','E','F','G']
+    scale: []
   };
 
 
@@ -62,8 +62,14 @@ function App() {
 
 }
 
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function initAudio() {
 
+  await sleep(3000);
   await Tone.start();
   console.log("Audio initialized");
   pAnimate();
@@ -108,7 +114,8 @@ async function initAudio() {
           tempo={tempo}
           setTempo={setTempo}
           initAudio={initAudio}
-          startRef={startRef}/>
+          startRef={startRef}
+          />
 
     </div>
 
