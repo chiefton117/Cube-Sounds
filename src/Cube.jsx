@@ -101,8 +101,8 @@ function main() {
     //cubes[i].synth = new Tone.FMSynth();
     cubes[i].synth = new Tone.Synth();
 
-    //cubes[i].synth.chain(vibrato, reverb, Tone.Destination);
-    cubes[i].synth.chain(Tone.Destination);
+    cubes[i].synth.chain(vibrato, reverb, Tone.Destination);
+    //cubes[i].synth.chain(Tone.Destination);
 
     // Define more random values :)
     // Once the cube's counter reaches an arbitrary maximum, switch notes
@@ -112,7 +112,7 @@ function main() {
     // cubes[i].max_repeats = (Math.ceil((Math.random() * 8))+1);
     cubes[i].max_repeats = 1;
 
-    cubes[i].dx = 0;
+    cubes[i].dx = props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1));
     cubes[i].dy = 0;
     cubes[i].dz = 0;
 
@@ -165,16 +165,21 @@ function main() {
         // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
         // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
       }
+
       if(d.counter >= d.max_repeats) {
         d.note = (props.scaleRef.current[i % scale_len] + (Math.floor(Math.random() * max_pitch) + min_pitch)).toString();
         d.counter = 0;
       }
 
-      // d.position.x += dx;
-      // d.position.y += dy;
-      // d.position.z += dz;
 
-      d.position.x += props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1));
+      // if(d.dx != props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1))) {
+      //   d.position.x = 0;
+      //   d.dx = props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1));
+      // }
+      /// TODO Change position to 0 on speed change
+      d.dx = props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1));
+
+      d.position.x += d.dx;
       d.position.y += d.dy;
       d.position.z += d.dz;
       //Math.sin(Math.random(max)) * max
