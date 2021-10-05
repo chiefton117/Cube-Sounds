@@ -11,7 +11,8 @@ function App() {
     note: 'A',
     mode: "Major",
     tempo: 90,
-    scale: []
+    scale: [],
+    speed: 0.002
   };
 
 
@@ -19,13 +20,15 @@ function App() {
   const [note, setNote] = useState(options.note);
   const [tempo, setTempo] = useState(options.tempo);
   let [scale, setScale] = useState(options.scale);
-  //const [play, setPlay] = useState(options.play);
-  const [anim, pAnimate] = useState(0);
-
+  const [speed,setSpeed] = useState(options.speed);
+  let start = false;
 
   const scaleRef = React.useRef(options.scale);
-  const startRef = React.useRef(null);
-  scaleRef.current = options.scale;
+  const startRef = React.useRef(start);
+  const speedRef = React.useRef(options.speed);
+
+
+  let numCubes = 5;
 
   // Define some music theory terms
   // Starting at 'C0' and ending at 'G#9'
@@ -68,17 +71,13 @@ function sleep(ms) {
 
 async function initAudio() {
 
-  await sleep(3000);
   await Tone.start();
+  startRef.current = true;
   console.log("Audio initialized");
 
 }
 
-  let numCubes = 10;
 
-  // Continuous color schemes
-  //let colorC = (d) => d3.interpolateMagma( parseInt(d) / maxCubes );
-  //let colorC = (d) => d3.interpolateTurbo( parseInt(d) / maxCubes );
 
   // Discrete color scheme
   let colorC = (d) => d3.schemePaired[d % 10];
@@ -98,6 +97,9 @@ async function initAudio() {
           maxCubes={numCubes}
           tone={Tone}
           scaleRef={scaleRef}
+          startRef={startRef}
+          speedRef={speedRef}
+          speed={speed}
 
         />
 
@@ -105,6 +107,9 @@ async function initAudio() {
           modes={modes}
           mode={mode}
           setMode={setMode}
+          speed={speed}
+          setSpeed={setSpeed}
+          speedRef={speedRef}
           note={note}
           notes={notes}
           setNote={setNote}
@@ -112,6 +117,7 @@ async function initAudio() {
           setTempo={setTempo}
           initAudio={initAudio}
           startRef={startRef}
+
           />
 
     </div>

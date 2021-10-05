@@ -48,7 +48,7 @@ function main() {
   // Define base and max speed
   // Then, generate a scalar up to max to multiply the base by
   var max_mult = 5;
-  var min_speed = 0.0004;
+  var min_speed = props.speed;
   
   // Each note timing can range from 1-256
   // This can be represented as a random power of 2 as
@@ -66,7 +66,6 @@ function main() {
   // e.g. 4n. is a dotted quarter note
   const note_types = ['n','t'];
   
-
 
   var cubes = [];
 
@@ -105,10 +104,6 @@ function main() {
     //cubes[i].synth.chain(vibrato, reverb, Tone.Destination);
     cubes[i].synth.chain(Tone.Destination);
 
-    cubes[i].dx = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
-    //cubes[i].dy = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
-    //cubes[i].dz = min_speed * (2**(Math.ceil((Math.random() * max_mult))+1));
-
     // Define more random values :)
     // Once the cube's counter reaches an arbitrary maximum, switch notes
     cubes[i].counter = 0;
@@ -117,6 +112,7 @@ function main() {
     // cubes[i].max_repeats = (Math.ceil((Math.random() * 8))+1);
     cubes[i].max_repeats = 1;
 
+    cubes[i].dx = 0;
     cubes[i].dy = 0;
     cubes[i].dz = 0;
 
@@ -126,6 +122,9 @@ function main() {
 
 
   function animate() {
+
+    // Check for start button to be pressed before allowing animation
+    if(props.startRef.current) {
 
 
       cubes.forEach(function(d,idx) {
@@ -175,14 +174,14 @@ function main() {
       // d.position.y += dy;
       // d.position.z += dz;
 
-      d.position.x += d.dx;
+      d.position.x += props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1));
       d.position.y += d.dy;
       d.position.z += d.dz;
       //Math.sin(Math.random(max)) * max
 
     });
 
-
+    }
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
 
@@ -192,17 +191,8 @@ function main() {
 
 }
 
-
 window.onload = main;
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// useEffect(() => {
-//     sleep(5000);
-//     main();
-//   }, [props.anim]);
 
   return (
 
