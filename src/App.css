@@ -4,6 +4,7 @@
 .legend {
   position: absolute;
   color: white;
+  background-color: #222;
   border: 1px solid white;
   padding-left: 1em;
   padding-right: 1em;

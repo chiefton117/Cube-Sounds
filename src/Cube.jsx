@@ -31,11 +31,10 @@ function main() {
 
   scene.add(bound);
 
-  // const controls = new THREE.OrbitControls( camera, renderer.domElement );
   const controls = new OrbitControls( camera, renderer.domElement );
 
   camera.position.z = 15;
-  //camera.position.y = 15;
+
 
   var dx = 0.05;
   var dy = 0.05;
@@ -77,7 +76,7 @@ function main() {
   env.attackCurve = 'sine';
   //env.triggerAttack();
 
-  for(var i = 0; i < props.maxCubes; i++) {
+  for(var i = 0; i < props.numCubes; i++) {
 
 
     const material = new THREE.MeshBasicMaterial( { 
@@ -92,27 +91,30 @@ function main() {
     let randPitch = Math.floor(Math.random() * max_pitch) + min_pitch;
     let randLen = 2 ** Math.floor(Math.random() * max_note_len);
     let type_idx = Math.floor(Math.random() * note_types.length);
+    
+    cubes[i].minSpeed = props.speedRef.current;
 
     cubes[i].note = (props.scaleRef.current[randNote] + randPitch);
 
     cubes[i].note_len = (randLen + note_types[type_idx]);
 
-    //cubes[i].synth = new Tone.MembraneSynth();
+    cubes[i].synth = new Tone.MembraneSynth();
     //cubes[i].synth = new Tone.FMSynth();
-    cubes[i].synth = new Tone.Synth();
+    //cubes[i].synth = new Tone.Synth();
 
-    cubes[i].synth.chain(vibrato, reverb, Tone.Destination);
-    //cubes[i].synth.chain(Tone.Destination);
+    //cubes[i].synth.chain(vibrato, reverb, Tone.Destination);
+    cubes[i].synth.chain(Tone.Destination);
 
     // Define more random values :)
     // Once the cube's counter reaches an arbitrary maximum, switch notes
     cubes[i].counter = 0;
 
     // How many times can a note repeat before changing
-    // cubes[i].max_repeats = (Math.ceil((Math.random() * 8))+1);
-    cubes[i].max_repeats = 1;
+    //cubes[i].max_repeats = (Math.ceil((Math.random() * 8))+1);
+    cubes[i].max_repeats = 6;
 
-    cubes[i].dx = props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1));
+    cubes[i].dx = cubes[i].minSpeed * (2**(Math.ceil((Math.random() * max_mult))+1));
+    console.log(cubes[i].minSpeed);
     cubes[i].dy = 0;
     cubes[i].dz = 0;
 
@@ -140,9 +142,6 @@ function main() {
         d.position.y = 0;
         d.position.z = 0;
         d.synth.triggerAttackRelease(d.note, d.note_len);
-        // d.dx = Math.sin((Math.random()-0.5)) * max_speed;
-        // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
-        // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
 
       }
       if(Math.abs(d.position.y) >= max) {
@@ -151,9 +150,7 @@ function main() {
         d.position.y = 0;
         d.position.z = 0;
         d.synth.triggerAttackRelease(d.note, d.note_len);
-        // d.dx = Math.sin((Math.random()-0.5)) * max_speed;
-        // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
-        // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
+
       }
       if(Math.abs(d.position.z) >= max) {
         d.counter++;
@@ -161,29 +158,23 @@ function main() {
         d.position.y = 0;
         d.position.z = 0;
         d.synth.triggerAttackRelease(d.note, d.note_len);
-        // d.dx = Math.sin((Math.random()-0.5)) * max_speed;
-        // d.dy = Math.sin((Math.random()-0.5)) * max_speed;
-        // d.dz = Math.sin((Math.random()-0.5)) * max_speed;
+
       }
 
       if(d.counter >= d.max_repeats) {
         d.note = (props.scaleRef.current[i % scale_len] + (Math.floor(Math.random() * max_pitch) + min_pitch)).toString();
         d.counter = 0;
       }
-
-
-      // if(d.dx != props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1))) {
-      //   d.position.x = 0;
-      //   d.dx = props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1));
-      // }
-      /// TODO Change position to 0 on speed change
-      d.dx = props.speedRef.current * (2**(Math.ceil((Math.random() * max_mult))+1));
+      if(d.minSpeed != props.speedRef.current) {
+        d.position.x = 0;
+        d.minSpeed = props.speedRef.current;
+        d.dx = d.minSpeed * (2**(Math.ceil((Math.random() * max_mult))+1));
+      }
 
       d.position.x += d.dx;
       d.position.y += d.dy;
       d.position.z += d.dz;
-      //Math.sin(Math.random(max)) * max
-
+      
     });
 
     }

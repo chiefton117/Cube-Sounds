@@ -12,7 +12,7 @@ function App() {
     mode: "Major",
     tempo: 90,
     scale: [],
-    speed: 0.002
+    speed: 0.002,
   };
 
 
@@ -20,15 +20,21 @@ function App() {
   const [note, setNote] = useState(options.note);
   const [tempo, setTempo] = useState(options.tempo);
   let [scale, setScale] = useState(options.scale);
-  const [speed,setSpeed] = useState(options.speed);
   let start = false;
+  let range = [0,9];
 
+  // Control the current scale we're playing in
   const scaleRef = React.useRef(options.scale);
+  // Correctly start the simulation/audio
   const startRef = React.useRef(start);
+  // Control the minimum speed of cubes
   const speedRef = React.useRef(options.speed);
+  // Control the range of notes available to modify
+  const rangeRef = React.useRef(range);
 
 
-  let numCubes = 5;
+
+  let numCubes = 6;
 
   // Define some music theory terms
   // Starting at 'C0' and ending at 'G#9'
@@ -59,14 +65,9 @@ function App() {
 
     options.scale.push(notes[((d + start) % notes.length)]);
      });
-  //setScale(options.scale);
+
   scaleRef.current = options.scale;
 
-}
-
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function initAudio() {
@@ -76,8 +77,6 @@ async function initAudio() {
   console.log("Audio initialized");
 
 }
-
-
 
   // Discrete color scheme
   let colorC = (d) => d3.schemePaired[d % 10];
@@ -94,27 +93,24 @@ async function initAudio() {
 
         <Cube 
           color={colorC}
-          maxCubes={numCubes}
+          numCubes={numCubes}
           tone={Tone}
           scaleRef={scaleRef}
           startRef={startRef}
           speedRef={speedRef}
-          speed={speed}
 
         />
 
         <Legend onChange = {appOnChange()}
           modes={modes}
           mode={mode}
-          setMode={setMode}
-          speed={speed}
-          setSpeed={setSpeed}
-          speedRef={speedRef}
           note={note}
-          notes={notes}
           setNote={setNote}
-          tempo={tempo}
-          setTempo={setTempo}
+          notes={notes}
+          setMode={setMode}
+          speedRef={speedRef}
+          rangeRef={rangeRef}
+          setNote={setNote}
           initAudio={initAudio}
           startRef={startRef}
 

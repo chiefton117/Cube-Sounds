@@ -1,5 +1,10 @@
 import React from "react";
 import './App.css';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 function Legend(props) {
 
 
@@ -7,16 +12,20 @@ function Legend(props) {
 
     <div>
 
-      <p>Scale: </p>
-      <select value={props.note} 
-      name="note" 
-      onChange={(event) => {props.setNote(event.target.value)}}>
-      {props.notes.map((d,idx) => (
+      <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel>Scale</InputLabel>
+        <Select
+          value={props.note} 
+          onChange={(event) => {props.setNote(event.target.value)}}
+        >
+          {props.notes.map((d,idx) => (
 
-        <option value={d} key={d}>{d}</option>
+            <MenuItem key={d} value={d}>{d}</MenuItem>
 
-      ))};
-      </select>
+          ))};
+  
+        </Select>
+      </FormControl>
 
 
 
