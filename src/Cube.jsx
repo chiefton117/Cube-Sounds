@@ -128,6 +128,10 @@ const clock = new THREE.Clock();
     cubes[i].dy = 0;
     cubes[i].dz = 0;
 
+
+    const center = new THREE.Vector3();
+    cubes[i].dist = new THREE.Vector3(cubes[i].dx,cubes[i].dy,cubes[i].dz);
+
     scene.add(cube);  
 
   }
@@ -145,7 +149,15 @@ const clock = new THREE.Clock();
 
       //const synth = new Tone.Synth().toDestination();
 
-      if(Math.abs(d.position.x) >= max) {
+      // if(Math.abs(d.position.x) >= max) {
+      //   d.counter++;
+      //   d.position.x = 0;
+      //   d.position.y = 0;
+      //   d.position.z = 0;
+      //   d.synth.triggerAttackRelease(d.note, d.note_len);
+
+      // }
+      if(d.dist.length() >= max) {
         d.counter++;
         d.position.x = 0;
         d.position.y = 0;
@@ -153,22 +165,22 @@ const clock = new THREE.Clock();
         d.synth.triggerAttackRelease(d.note, d.note_len);
 
       }
-      if(Math.abs(d.position.y) >= max) {
-        d.counter++;
-        d.position.x = 0;
-        d.position.y = 0;
-        d.position.z = 0;
-        d.synth.triggerAttackRelease(d.note, d.note_len);
+      // if(Math.abs(d.position.y) >= max) {
+      //   d.counter++;
+      //   d.position.x = 0;
+      //   d.position.y = 0;
+      //   d.position.z = 0;
+      //   d.synth.triggerAttackRelease(d.note, d.note_len);
 
-      }
-      if(Math.abs(d.position.z) >= max) {
-        d.counter++;
-        d.position.x = 0;
-        d.position.y = 0;
-        d.position.z = 0;
-        d.synth.triggerAttackRelease(d.note, d.note_len);
+      // }
+      // if(Math.abs(d.position.z) >= max) {
+      //   d.counter++;
+      //   d.position.x = 0;
+      //   d.position.y = 0;
+      //   d.position.z = 0;
+      //   d.synth.triggerAttackRelease(d.note, d.note_len);
 
-      }
+      // }
 
       if(d.counter >= d.max_repeats) {
         d.note = (props.scaleRef.current[i % scale_len] + (Math.floor(Math.random() * max_pitch) + min_pitch)).toString();
@@ -183,6 +195,13 @@ const clock = new THREE.Clock();
       d.position.x += d.dx;
       d.position.y += d.dy;
       d.position.z += d.dz;
+
+      d.dist.x = d.position.x;
+      d.dist.y = d.position.y;
+      d.dist.z = d.position.z;
+
+
+
       //sphere.material.opacity = 0.5 * (1 + Math.sin( clock.getElapsedTime() ) );
 
 
