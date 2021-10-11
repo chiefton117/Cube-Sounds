@@ -4,25 +4,32 @@ import Scale from './Scale.jsx'
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
 
 function Legend(props) {
 
-
-  // const legend = d3.select(".legend")
-  //   .append("g");
-
-  // legend.append("h4")
-  //   .text("Controls");
-
   return (
 
     <div id="leg" className="legend">
-      <h4>Controls</h4>
+      <Typography variant="h5" component="h2">Controls</Typography>
+
         <hr/>
 
-          <p>Min Speed</p>
-          <input onChange={(event) => {props.speedRef.current = event.target.value}} value={props.speedRef.current.value} placeholder={props.speedRef.current} type="number" min="0" max="0.1" step="0.0002"/>
+      <InputLabel>Min Speed</InputLabel>
+     <TextField
+      type="number"
+      value={props.speedRef.current.value}
+      variant="outlined"
+      inputProps={{
+        maxLength: 13,
+        step: "0.0002"
+      }}
+      onChange={(event) => {props.speedRef.current = event.target.value}}
+    />
+
         <hr/>
           <p>Note Range</p>
           <Box sx={{ width: 250 }}>
@@ -36,10 +43,11 @@ function Legend(props) {
             onChange={(event) => {props.rangeRef.current = event.target.value}}
             valueLabelDisplay="auto"
             />
+
           </Box>
           <Scale {...props}/>
         <hr/>
-          <Button variant="outlined" onClick={props.initAudio}>Start</Button>
+          <Button variant="outlined" onClick={props.initAudio}>{props.startRef.current == true ? "Stop" : "Start"}</Button>
         <hr/>
 
     </div> 

@@ -18,13 +18,24 @@ function main() {
   document.body.appendChild( renderer.domElement );
 
   // L/W/H of the box - how far does a cube travel before resetting
-  const max = 4;
+  const max = 8;
 
   // Create standard box geometry
   var geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
 
 
   var bb = new THREE.BoxGeometry(max*Math.E,max*Math.E,max*Math.E);
+  // var bb = new THREE.SphereGeometry(max*Math.E*2,max*Math.E,max*Math.E);
+  //var bb = new THREE.SphereGeometry();
+
+
+var sphere = new THREE.SphereGeometry(max+0.25);
+var object = new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4 }) );
+var box = new THREE.BoxHelper( object );
+scene.add(box);
+scene.add(object);
+
+const clock = new THREE.Clock();
 
   // Create bounding box render
   const bound = new THREE.BoxHelper(new THREE.Mesh(bb, new THREE.MeshBasicMaterial( 0xff0000 )), 0xffffff);
@@ -114,7 +125,6 @@ function main() {
     cubes[i].max_repeats = 6;
 
     cubes[i].dx = cubes[i].minSpeed * (2**(Math.ceil((Math.random() * max_mult))+1));
-    console.log(cubes[i].minSpeed);
     cubes[i].dy = 0;
     cubes[i].dz = 0;
 
@@ -127,7 +137,6 @@ function main() {
 
     // Check for start button to be pressed before allowing animation
     if(props.startRef.current) {
-
 
       cubes.forEach(function(d,idx) {
 
@@ -174,7 +183,9 @@ function main() {
       d.position.x += d.dx;
       d.position.y += d.dy;
       d.position.z += d.dz;
-      
+      //sphere.material.opacity = 0.5 * (1 + Math.sin( clock.getElapsedTime() ) );
+
+
     });
 
     }

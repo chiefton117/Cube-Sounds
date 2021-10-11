@@ -41,6 +41,8 @@ function App() {
   const min = 1;
   const max = 9;
 
+  const midpoint = (max-min)/2;
+
   const modes = ['Major', 'Minor'];
   const notes = ['A','A#','B','C','C#','D','D#','E','F','F#','G','G#'];
 
@@ -72,10 +74,13 @@ function App() {
 
 async function initAudio() {
 
+  if(startRef.current) {
+    startRef.current = startRef.current;
+  } else {
   await Tone.start();
   startRef.current = true;
   console.log("Audio initialized");
-
+  }
 }
 
   // Discrete color scheme

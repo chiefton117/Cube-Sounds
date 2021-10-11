@@ -12,36 +12,33 @@ function Legend(props) {
 
     <div>
 
-      <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel>Scale</InputLabel>
-        <Select
-          value={props.note} 
-          onChange={(event) => {props.setNote(event.target.value)}}
-        >
-          {props.notes.map((d,idx) => (
+    <FormControl variant="filled" sx={{ m: 1 }}>
+      <InputLabel>Scale</InputLabel>
+      <Select
+        value={props.note} 
+        onChange={(event) => {props.setNote(event.target.value)}}
+      >
+        {props.notes.map((d,idx) => (
 
-            <MenuItem key={d} value={d}>{d}</MenuItem>
+          <MenuItem key={d} value={d}>{d}</MenuItem>
 
-          ))};
-  
-        </Select>
-      </FormControl>
+        ))};
 
-
-
-      <p>Mode: </p>
-      <select 
+      </Select>
+    </FormControl>
+    <FormControl variant="filled" sx={{ m: 1 }}>
+      <InputLabel>Mode</InputLabel>
+      <Select
       value={props.mode} 
-      name="mode" 
+      name="mode"
       onChange = {(event) => {props.setMode(event.target.value)}}>
       {props.modes.map((d,idx) => (
 
-        <option value={d} key={d}>{d}</option>
+        <MenuItem key={d} value={d}>{d}</MenuItem>
 
       ))};
-      </select>
-
-
+      </Select>
+    </FormControl>
 
     </div> 
   );
