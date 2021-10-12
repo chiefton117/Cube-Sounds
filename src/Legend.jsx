@@ -22,6 +22,7 @@ function Legend(props) {
      <TextField
       type="number"
       value={props.speedRef.current.value}
+      placeholder={props.speedRef.current.value}
       variant="outlined"
       inputProps={{
         maxLength: 13,

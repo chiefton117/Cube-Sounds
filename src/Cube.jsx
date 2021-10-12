@@ -83,6 +83,7 @@ const clock = new THREE.Clock();
   const delay = new Tone.PingPongDelay("8n", 0.2);
   const env = new Tone.Envelope(0.4);
   const vibrato = new Tone.Vibrato();
+  const compressor = new Tone.Compressor(-30, 2);
 
   env.attackCurve = 'sine';
   //env.triggerAttack();
@@ -97,7 +98,7 @@ const clock = new THREE.Clock();
     cubes[i] = cube;
 
 
-
+    // Random note, pitch and length generation
     let randNote = Math.floor(Math.random() * scale_len);
     let randPitch = Math.floor(Math.random() * max_pitch) + min_pitch;
     let randLen = 2 ** Math.floor(Math.random() * max_note_len);
@@ -109,12 +110,12 @@ const clock = new THREE.Clock();
 
     cubes[i].note_len = (randLen + note_types[type_idx]);
 
-    cubes[i].synth = new Tone.MembraneSynth();
+    //cubes[i].synth = new Tone.MembraneSynth();
     //cubes[i].synth = new Tone.FMSynth();
-    //cubes[i].synth = new Tone.Synth();
+    cubes[i].synth = new Tone.Synth();
 
-    //cubes[i].synth.chain(vibrato, reverb, Tone.Destination);
-    cubes[i].synth.chain(Tone.Destination);
+    cubes[i].synth.chain(vibrato, reverb, compressor, Tone.Destination);
+    //cubes[i].synth.chain(compressor, Tone.Destination);
 
     // Define more random values :)
     // Once the cube's counter reaches an arbitrary maximum, switch notes
@@ -165,23 +166,9 @@ const clock = new THREE.Clock();
         d.synth.triggerAttackRelease(d.note, d.note_len);
 
       }
-      // if(Math.abs(d.position.y) >= max) {
-      //   d.counter++;
-      //   d.position.x = 0;
-      //   d.position.y = 0;
-      //   d.position.z = 0;
-      //   d.synth.triggerAttackRelease(d.note, d.note_len);
 
-      // }
-      // if(Math.abs(d.position.z) >= max) {
-      //   d.counter++;
-      //   d.position.x = 0;
-      //   d.position.y = 0;
-      //   d.position.z = 0;
-      //   d.synth.triggerAttackRelease(d.note, d.note_len);
 
-      // }
-
+      // Trigger a note re-association after a number of repeats
       if(d.counter >= d.max_repeats) {
         d.note = (props.scaleRef.current[i % scale_len] + (Math.floor(Math.random() * max_pitch) + min_pitch)).toString();
         d.counter = 0;
