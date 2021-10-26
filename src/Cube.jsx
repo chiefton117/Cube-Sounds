@@ -110,12 +110,12 @@ const clock = new THREE.Clock();
 
     cubes[i].note_len = (randLen + note_types[type_idx]);
 
-    //cubes[i].synth = new Tone.MembraneSynth();
+    cubes[i].synth = new Tone.MembraneSynth();
     //cubes[i].synth = new Tone.FMSynth();
-    cubes[i].synth = new Tone.Synth();
+    //cubes[i].synth = new Tone.Synth();
 
-    cubes[i].synth.chain(vibrato, reverb, compressor, Tone.Destination);
-    //cubes[i].synth.chain(compressor, Tone.Destination);
+    //cubes[i].synth.chain(vibrato, reverb, compressor, Tone.Destination);
+    cubes[i].synth.chain(compressor, Tone.Destination);
 
     // Define more random values :)
     // Once the cube's counter reaches an arbitrary maximum, switch notes
